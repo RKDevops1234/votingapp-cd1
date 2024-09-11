@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+        environment {
+        S3_BUCKET = 'rajtal-votingapp'
+        S3_PATH = 'helm-charts'
+    }
+    
     stages {
         stage('Clone Repository') {
             steps {
@@ -15,7 +19,7 @@ pipeline {
 
          stage('Upload Helm Chart to S3') {
             steps {
-                withCredentials([string(credentialsId: 'aws-credentials-id', variable: 'AWS_ACCESS_KEY_ID')]) {
+                withCredentials(credentials: 'aws-credentials-id') {
                     script {
                         def chartFile = sh(script: 'ls voting-app/db/charts/*.tgz', returnStdout: true).trim()
                         sh "aws s3 cp ${chartFile} s3://${S3_BUCKET}/${S3_PATH}/${chartFile}"
