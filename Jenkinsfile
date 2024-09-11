@@ -5,6 +5,7 @@ pipeline {
         S3_BUCKET = 'rajtal-votingapp'
         S3_PATH = 'helm-charts'
         AWS_REGION = 'us-east-1' // Specify your AWS region here
+        CHART_VERSION = "1.1.0"
     }
 
     stages {
@@ -17,7 +18,7 @@ pipeline {
         stage('Package Helm Chart') {
             steps {
                 dir('voting-app/db/charts') {
-                    sh 'helm package .'
+                    sh 'helm package . --version ${CHART_VERSION}'
                 }
             }
         }
