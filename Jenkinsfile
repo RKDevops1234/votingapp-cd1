@@ -72,7 +72,6 @@ pipeline {
                 sh """
                 helm upgrade --install ${chartName} ${chartName}-${CHART_VERSION}.tgz \
                     --namespace ${NAMESPACE} 
-                    // --values ${chartName}-values.yaml
                    """
              }
             }
