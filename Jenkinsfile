@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // Define an array of chart names
-                    def charts = ['db', 'redis', 'woker','vote']
+                    def charts = ['db', 'redis', 'worker','vote']
             
                     // Iterate over each chart name
                         charts.each { chartName ->
@@ -64,7 +64,7 @@ pipeline {
             steps {
              script {
              // Define an array of chart names
-              def charts = ['db', 'redis', 'woker','vote']
+              def charts = ['db', 'redis', 'worker','vote']
             
              // Iterate over each chart name
              charts.each { chartName ->
