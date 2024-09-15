@@ -6,6 +6,7 @@ pipeline {
         CLUSTER_NAME = 'ed-eks-01' // Change this to your EKS cluster name
         S3_BUCKET = 'rajtal-votingapp'
         S3_PATH = 'helm-charts'
+        CHART_PATH = 'helm-charts'
         CHART_VERSION = "1.1.2"
         NAMESPACE = 'dev' // Kubernetes namespace to deploy into
       //  CHART_PATH = 'helm-charts/my-chart.tgz' // Path to the Helm chart in S3
