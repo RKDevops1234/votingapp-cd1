@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    
+        
+        
+    }
+
+
+pipeline {
+    agent any
+
     environment {
         AWS_REGION = 'us-east-1' // Specify your AWS region here
         CLUSTER_NAME = 'ed-eks-01' // Change this to your EKS cluster name
@@ -41,44 +50,26 @@ pipeline {
         }
 
         
-        stage('Download Helm Charts') {
+        stage('Download Helm Chart') {
             steps {
-                script {
-                    // Define an array of chart names
-                    def charts = ['db', 'redis', 'woker','vote']
-            
-                    // Iterate over each chart name
-                        charts.each { chartName ->
-                     // Construct the S3 path for the current chart
-                    def s3Path = "s3://$S3_BUCKET/$CHART_PATH/${chartName}-${CHART_VERSION}.tgz"
-                
-                        // Download the chart from S3
-                    sh "aws s3 cp ${s3Path} ${chartName}-${CHART_VERSION}.tgz"
-                    }
-                 }
+                // Download Helm chart from S3
+                sh '''
+                aws s3 cp s3://$S3_BUCKET/$CHART_PATH/db-${CHART_VERSION} db-${CHART_VERSION}.tgz
+                '''
+            }
         }
-    }
 
-        stage('Install/Upgrade Helm Charts') {
+        stage('Install/Upgrade Helm Chart') {
             steps {
-             script {
-             // Define an array of chart names
-              def charts = ['db', 'redis', 'woker','vote']
-            
-             // Iterate over each chart name
-             charts.each { chartName ->
-                    // Install or upgrade the Helm chart
-                sh """
-                helm upgrade --install ${chartName} ${chartName}-${CHART_VERSION}.tgz \
-                    --namespace ${NAMESPACE} \
-                    --values ${chartName}-values.yaml
-                   """
-             }
+                // Install or upgrade the Helm chart
+                sh '''
+                helm upgrade --install $CHART_NAME my-chart.tgz \
+                    --namespace $NAMESPACE \
+                    --values values.yaml
+                '''
             }
         }
     }
-
-}
 
     post {
         success {
